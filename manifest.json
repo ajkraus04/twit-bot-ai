@@ -1,0 +1,16 @@
+{
+  "name": "twit-bot-ai",
+  "description": "Generates controversial tweets for twitter",
+  "version": "1.0",
+  "manifest-version": 3,
+  "browser-action": {
+    "default_icon": null,
+    "default_popup": null
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": ["https://twitter.com/*"]
+    }
+  ]
+}
