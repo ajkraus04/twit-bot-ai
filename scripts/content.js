@@ -76,3 +76,4 @@ function injectTemplate() {
 }
 injectAi();
 injectTemplate();
+console.log('hello');
