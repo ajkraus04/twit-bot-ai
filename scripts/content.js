@@ -1,79 +1,92 @@
-
-console.log("hello")
-// fetch("https://api.openai.com/v1/chat/completions", {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//     Accept: "application/json",
-//     Authorization: "Bearer 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",
-//   },
-//   body: JSON.stringify(data),
-// })
-//   .then((data) => data.json())
-
-
-  let topic = 5;
-  const data = {
-  model: "gpt-3.5-turbo",
-  messages: [
-    {
-      role: "system",
-      content: "You are a copywriter that writes controversial tweets",
-    },
-    {
-      role: "user",
-      content: `tweet about ${topic}`,
-    },
-  ],
-  temperature: 0.7,
-};
-
+console.log("hello");
 
 function injectAi() {
-  console.log("triggered");
-  const placeToAdd = document.querySelector(
-    "div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1s2bzr4"
-  );
+  setTimeout(() => {
+    console.log("dom loeaded");
+    const placeToAdd = document.querySelector(
+      "div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1s2bzr4"
+    );
 
-  console.log(document);
-  console.log(placeToAdd);
+    console.log(placeToAdd);
+    const newButton = document.createElement("div");
+    placeToAdd.appendChild(newButton);
+    newButton.innerHTML = "<button>AI</button>";
+    newButton.setAttribute("id", "theHandyAiButton");
+    newButton.setAttribute("z-index", "1");
+    // newButton.setAttribute("color", white);
 
-  const newButton = document.createElement("div");
-  placeToAdd.appendChild(newButton);
-  newButton.innerHTML = "<button>AI</button>";
-  newButton.setAttribute("id", "theHandyAiButton")
-  newButton.setAttribute("z-index", "1");
-  // newButton.setAttribute("color", white);
+    const whatIsHappening = document.querySelector(
+      ".public-DraftEditorPlaceholder-inner"
+    );
+    whatIsHappening.innerText = "What topic do you want to tweet about?";
 
-console.log("hello");
+    newButton.addEventListener("click", () => {
+      console.log("button clicked");
+      promptify();
+    });
+
+    console.log("hello");
+  }, 1000);
 }
 
+function promptify() {
+  setTimeout(() => {
+    let promptSelector = document.querySelector(
+      ".public-DraftStyleDefault-block"
+    );
+    console.log(promptSelector);
+    let promptText = promptSelector.firstChild.firstChild.innerText;
+    const tweet = generatetweet(promptText);
 
-function injectTemplate() {
-  const template = document.createElement('div');
-  template.setAttribute("position", "relative");
-  template.setAttribute("z-index", "1");
-
-  template.style.width = "200px"
-
-  template.style.height = "200px";
-  template.style.backgroundColor = "white"
-  template.style.top = "0px"
-  template.style.left = "0px"
-  template.style.zIndex = "1"
-  template.innerText = "djkfhasdkljfhasflkjahflkjashfds"
-  const body = document.querySelector('body');
-
-  body.appendChild(template);
-
-
-
-
-
-
-
-
+    promptText = tweet;
+  }, 1500);
 }
+function setTweet(text) {
+  setTimeout(() => {
+    navigator.clipboard.writeText(text);
+    let promptSelector = document.querySelector(
+      ".public-DraftStyleDefault-block"
+    );
+    promptSelector.firstChild.firstChild.textContent = text;
+    // promptSelector.select();
+
+    //Execute command
+
+    document.execCommand("paste");
+  }, 1500);
+}
+
+function generatetweet(topic) {
+  const data = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: "You write controversial tweets on twitter",
+      },
+      {
+        role: "user",
+        content: `tweet about ${topic}`,
+      },
+    ],
+    temperature: 0.7,
+  };
+  fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization:
+        "Bearer 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",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((data) => data.json())
+    .then((data) => {
+      tweet = data.choices[0].message.content;
+      setTweet(tweet);
+    });
+}
+
 injectAi();
-injectTemplate();
-console.log('hello');
+console.log("hello");
