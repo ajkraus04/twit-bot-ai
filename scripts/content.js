@@ -76,8 +76,7 @@ function generatetweet(topic) {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization:
-        "Bearer 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",
+      Authorization: "Bearer *THIS IS WHERE THE KEY SHOULD GO*",
     },
     body: JSON.stringify(data),
   })
